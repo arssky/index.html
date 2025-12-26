@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dari ArsilMods 🤍</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  background:linear-gradient(135deg,#ff7eb3,#ff758c);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'Segoe UI',sans-serif;
+  color:white;
+  text-align:center;
+}
+
+.card{
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(12px);
+  padding:30px;
+  border-radius:24px;
+  width:90%;
+  max-width:420px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+}
+
+.sticker{
+  font-size:60px;
+  margin-bottom:10px;
+}
+
+#text{
+  font-size:18px;
+  min-height:90px;
+  margin-bottom:20px;
+}
+
+.btn{
+  padding:12px 24px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  margin:6px;
+  cursor:pointer;
+}
+
+.next{ background:white; color:#ff4f8b; font-weight:bold; }
+.yes{ background:#25D366; color:white; }
+.no{ background:#ff4d4d; color:white; }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="sticker" id="sticker">💌</div>
+  <p id="text">Klik Mulai dulu ya.</p>
+
+  <button class="btn next" id="startBtn">Mulai</button>
+  <button class="btn next" id="nextBtn" style="display:none">Lanjut</button>
+  <button class="btn yes" id="yesBtn" style="display:none">Iya 🤍</button>
+  <button class="btn no" id="noBtn" style="display:none">Enggak</button>
+</div>
+
+<script>
+const music = new Audio("https://files.catbox.moe/e9w9kc.mp3");
+music.loop = true;
+
+const textEl = document.getElementById("text");
+const sticker = document.getElementById("sticker");
+
+const startBtn = document.getElementById("startBtn");
+const nextBtn  = document.getElementById("nextBtn");
+const yesBtn   = document.getElementById("yesBtn");
+const noBtn    = document.getElementById("noBtn");
+
+const scenes = [
+  {text:"Aku mau jujur sama kamu.", emoji:"💭"},
+  {text:"Sebenernya aku cukup gugup nulis ini.", emoji:"😅"},
+  {text:"Akhir-akhir ini aku sering kepikiran kamu.", emoji:"🤍"},
+  {text:"Aku nyaman ngobrol sama kamu.", emoji:"😊"},
+  {text:"Perasaanku ke kamu itu serius.", emoji:"💖"},
+  {text:"Kamu mau nggak jadi pacarku?", emoji:"💍"}
+];
+
+let index = 0;
+let charIndex = 0;
+let isTyping = false;
+
+function typeText(text){
+  isTyping = true;
+  if(charIndex < text.length){
+    textEl.innerHTML += text.charAt(charIndex);
+    charIndex++;
+    setTimeout(()=>typeText(text), 70);
+  } else {
+    isTyping = false;
+    if(index === scenes.length - 1){
+      yesBtn.style.display = "inline-block";
+      noBtn.style.display  = "inline-block";
+    } else {
+      nextBtn.style.display = "inline-block";
+    }
+  }
+}
+
+function showScene(){
+  textEl.innerHTML = "";
+  charIndex = 0;
+  nextBtn.style.display = "none";
+  sticker.innerHTML = scenes[index].emoji;
+  typeText(scenes[index].text);
+}
+
+startBtn.onclick = () => {
+  music.play();
+  startBtn.style.display = "none";
+  showScene();
+};
+
+nextBtn.onclick = () => {
+  if(isTyping) return;
+  index++;
+  showScene();
+};
+
+yesBtn.onclick = () => {
+  sticker.innerHTML="🎉💖";
+  textEl.innerHTML="Aku senang banget dengernya. Terima kasih sudah mau nerima aku 🤍";
+  yesBtn.style.display="none";
+  noBtn.style.display="none";
+};
+
+noBtn.onclick = () => {
+  sticker.innerHTML="🙂";
+  textEl.innerHTML="Aku menghargai kejujuran kamu. Terima kasih sudah baca sampai akhir 🤍";
+  yesBtn.style.display="none";
+  noBtn.style.display="none";
+};
+</script>
+
+</body>
+</html>
